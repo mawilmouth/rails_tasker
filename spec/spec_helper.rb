@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails/tasker'
+require 'rails_tasker'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
