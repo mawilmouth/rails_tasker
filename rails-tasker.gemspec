@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative 'lib/rails/tasker/version'
+require_relative 'lib/rails_tasker/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'rails-tasker'
-  spec.version       = Rails::Tasker::VERSION
+  spec.version       = RailsTasker::VERSION
   spec.authors       = ['Michael Wilmouth']
   spec.email         = ['wilmouthworks@gmail.com']
 
