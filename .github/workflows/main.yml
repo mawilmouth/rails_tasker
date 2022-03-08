@@ -11,8 +11,8 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: 3.0.0
-    - name: Run the default task
+    - name: rspec
       run: |
         gem install bundler -v 2.2.3
         bundle install
-        bundle exec rake
+        bundle exec rspec
