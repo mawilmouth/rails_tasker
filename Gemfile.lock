@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rails-tasker (0.1.0)
+    rails_tasker (0.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -40,16 +40,18 @@ GEM
     rubocop-ast (1.16.0)
       parser (>= 3.1.1.0)
     ruby-progressbar (1.11.0)
+    timecop (0.9.5)
     unicode-display_width (1.8.0)
 
 PLATFORMS
   x86_64-darwin-21
 
 DEPENDENCIES
-  rails-tasker!
+  rails_tasker!
   rake (~> 13.0)
   rspec (~> 3.0)
   rubocop (~> 0.80)
+  timecop (~> 0.9.5)
 
 BUNDLED WITH
    2.2.3
