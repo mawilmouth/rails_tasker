@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-require_relative 'rails_tasker/version'
-require_relative "rails_tasker/railtie" if defined?(Rails::Railtie)
+module RailsTasker  
+  require_relative 'rails_tasker/railtie' if defined?(Rails::Railtie)
 
-module RailsTasker
+  def self.setup
+    yield self
+  end
 end

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'rails_tasker'
+require_relative 'support/active_record/base'
+require_relative 'support/rails/generators/base'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
