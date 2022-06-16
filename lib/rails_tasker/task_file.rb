@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_tasker/models/task'
+require 'rails_tasker/base'
 
 module RailsTasker
   class TaskFile
@@ -15,7 +16,36 @@ module RailsTasker
       !timestamp.empty? && !Task.completed_task?(version: timestamp)
     end
 
+    def call
+      load_object
+      output = nil
+
+      unless task_klass.nil?
+        output = task_klass.call
+        unload_object
+      end
+
+      output
+    end
+
     private
+
+    def load_object
+      require(filename)
+    end
+
+    def unload_object
+      ::Object.send(:remove_const, task_klass.to_s)
+    end
+
+    def task_klass_name
+      @task_klass_name ||= task_name.split('_').map(&:capitalize).join
+    end
+
+    def task_klass
+      @task_klass ||= task_klass_name.empty? ?
+        nil : ::Object.const_get(task_klass_name)
+    end
 
     def parse_filename
       timestamp = ''

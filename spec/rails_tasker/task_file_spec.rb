@@ -3,6 +3,8 @@
 require 'spec_helper'
 require 'rails_tasker/task_file'
 require 'rails_tasker/models/task'
+require_relative '../../examples/lib/rails_tasker/tasks/1234_example_task'
+require_relative '../../examples/lib/rails_tasker/tasks/12345_example_task'
 
 RSpec.describe RailsTasker::TaskFile do
   let(:examples_path) { '../../examples/lib/rails_tasker/tasks' }
@@ -51,6 +53,40 @@ RSpec.describe RailsTasker::TaskFile do
 
       it 'returns false' do
         expect(instance.pending?).to eq false
+      end
+    end
+  end
+
+  describe '#call' do
+    before do
+      allow(instance).to receive(:require).and_return true
+      allow(ExampleTask).to receive(:call)
+      allow(Object).to receive(:remove_const)
+    end
+
+    it 'requires the expected file' do
+      instance.call
+      expect(instance).to have_received(:require).with(filename).once
+    end
+
+    it 'calls the expected class' do
+      instance.call
+      expect(ExampleTask).to have_received(:call).with(no_args).once
+    end
+
+    it 'attempts to remove const to prevent name collisions' do
+      instance.call
+      expect(Object).to have_received(:remove_const).with(ExampleTask.to_s).once
+    end
+
+    context 'class cannot be found' do
+      let(:file_name) { "#{examples_path}/12345_example_task.rb" }
+
+      before { allow(ExampleTaskDuplicate).to receive(:call) }
+
+      it 'does not call the task' do
+        instance.call
+        expect(ExampleTaskDuplicate).not_to have_received(:call)
       end
     end
   end
