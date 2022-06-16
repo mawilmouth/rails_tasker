@@ -18,12 +18,8 @@ RSpec.describe RailsTasker::Task::FetchPendingService do
   end
 
   describe '#call' do
-    it 'returns an Array' do
-      expect(described_class.call).to be_a Array
-    end
-
     it 'returns the expected number of files' do
-      expect(described_class.call.length).to eq 1
+      expect(described_class.call.length).to eq 2
     end
 
     it 'returns task files' do
