@@ -27,6 +27,8 @@ Gem::Specification.new do |gem|
   gem.executables   = gem.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   gem.require_paths = ['lib']
 
+  gem.add_dependency 'colorize'
+  
   gem.add_development_dependency 'rake', '~> 13.0'
   gem.add_development_dependency 'rspec', '~> 3.0'
   gem.add_development_dependency 'timecop', '~> 0.9.5'
