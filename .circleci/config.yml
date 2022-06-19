@@ -25,8 +25,17 @@ jobs:
           name: Bundle Install
           command: cd ~/src && bundle install
       - run:
-          name: RSpec
-          command: cd ~/src && bundle exec rspec -- ~/src/spec
+          name: Install Code Climate Test Reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ~/src/cc-test-reporter
+            chmod +x ~/src/cc-test-reporter
+      - run:
+          name: RSpec and upload coverage
+          command: |
+            cd ~/src
+            ./cc-test-reporter before-build
+            bundle exec rspec -- spec
+            ./cc-test-reporter after-build -t simplecov
 
 workflows:
   build-workflow:
