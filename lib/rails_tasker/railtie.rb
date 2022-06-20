@@ -4,6 +4,7 @@ module RailsTasker
   class Railtie < Rails::Railtie
     rake_tasks do
       load 'rails_tasker/rake_tasks/run.rake'
+      load 'rails_tasker/rake_tasks/status.rake'
     end
 
     initializer 'load_task_record_models' do

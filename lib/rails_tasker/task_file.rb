@@ -5,6 +5,9 @@ require 'rails_tasker/base'
 
 module RailsTasker
   class TaskFile
+    UP_STATUS   = 'up'.freeze 
+    DOWN_STATUS = 'down'.freeze
+
     def initialize(filename: '')
       @filename = filename
       @timestamp, @task_name = parse_filename
@@ -13,7 +16,13 @@ module RailsTasker
     attr_reader :filename, :timestamp, :task_name
 
     def pending?
-      !timestamp.empty? && !Task.completed_task?(version: timestamp)
+      @is_pending ||= !timestamp.empty? && !Task.completed_task?(
+        version: timestamp
+      )
+    end
+
+    def status
+      pending? ? DOWN_STATUS : UP_STATUS
     end
 
     def call

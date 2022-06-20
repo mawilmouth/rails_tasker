@@ -1,21 +1,24 @@
 # frozen_string_literal: true
 
+require 'table_print'
 require 'rails_tasker/serviceable'
 require 'rails_tasker/services/task/fetch_service'
 
 module RailsTasker
   class Task
-    class FetchPendingService
+    class StatusService
+      COLUMNS = %w[status timestamp task_name].freeze
+
       include Serviceable
 
       def call
-        pending_tasks
+        tp(tasks, *COLUMNS)
       end
 
       private
 
-      def pending_tasks
-        @pending_tasks ||= FetchService.call.select(&:pending?)
+      def tasks
+        @tasks ||= FetchService.call
       end
     end
   end
