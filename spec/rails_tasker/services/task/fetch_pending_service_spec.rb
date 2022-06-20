@@ -18,12 +18,18 @@ RSpec.describe RailsTasker::Task::FetchPendingService do
   end
 
   describe '#call' do
+    let(:call) { described_class.call }
+
     it 'returns the expected number of files' do
-      expect(described_class.call.length).to eq 2
+      expect(call.length).to eq 3
     end
 
     it 'returns task files' do
-      expect(described_class.call).to all be_a RailsTasker::TaskFile
+      expect(call).to all be_a RailsTasker::TaskFile
+    end
+
+    it 'returns the sorted task files' do
+      expect(call.map(&:timestamp)).to eq %w[3 1234 12345]
     end
   end
 end

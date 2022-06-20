@@ -18,7 +18,9 @@ module RailsTasker
       def pending_tasks
         @pending_tasks ||= Dir[Task::FILE_LOCATION].map do |filename|
           TaskFile.new(filename: filename)
-        end.select(&:pending?).sort_by(&:timestamp)
+        end.select(&:pending?).sort_by do |task|
+          task.timestamp.to_i
+        end
       end
     end
   end
