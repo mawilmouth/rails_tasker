@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
+require 'simplecov'
 require 'rails_tasker'
 require_relative 'support/active_record/base'
 require_relative 'support/rails'
 require_relative 'support/rails/generators/base'
+
+SimpleCov.start
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
