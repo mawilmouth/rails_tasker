@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-require 'rails_tasker/models/task'
-require 'rails_tasker/task_file'
 require 'rails_tasker/serviceable'
+require 'rails_tasker/services/task/fetch_service'
 
 module RailsTasker
   class Task
@@ -16,11 +15,7 @@ module RailsTasker
       private
 
       def pending_tasks
-        @pending_tasks ||= Dir[Task::FILE_LOCATION].map do |filename|
-          TaskFile.new(filename: filename)
-        end.select(&:pending?).sort_by do |task|
-          task.timestamp.to_i
-        end
+        @pending_tasks ||= FetchService.call.select(&:pending?)
       end
     end
   end

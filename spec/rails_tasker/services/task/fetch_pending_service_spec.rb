@@ -1,16 +1,22 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'rails_tasker/services/task/fetch_pending_service'
 require 'rails_tasker/serviceable'
-require 'rails_tasker/task_file'
+require 'rails_tasker/services/task/fetch_service'
+require 'rails_tasker/services/task/fetch_pending_service'
 
 RSpec.describe RailsTasker::Task::FetchPendingService do
+  def create_task(pending:)
+    instance_double('RailsTasker::TaskFile', pending?: pending)
+  end
+
+  let(:task_one) { create_task(pending: true) }
+  let(:task_two) { create_task(pending: false) }
+  let(:task_three) { create_task(pending: true) }
+  let(:tasks) { [task_one, task_two, task_three] }
+
   before do
-    stub_const(
-      "RailsTasker::Task::FILE_LOCATION",
-      'examples/lib/rails_tasker/tasks/*.rb',
-    )
+    allow(RailsTasker::Task::FetchService).to receive(:call).and_return tasks
   end
 
   it 'includes Serviceable' do
@@ -20,16 +26,15 @@ RSpec.describe RailsTasker::Task::FetchPendingService do
   describe '#call' do
     let(:call) { described_class.call }
 
-    it 'returns the expected number of files' do
-      expect(call.length).to eq 3
+    it 'returns the expected task files' do
+      expect(call).to eq [task_one, task_three]
     end
 
-    it 'returns task files' do
-      expect(call).to all be_a RailsTasker::TaskFile
-    end
-
-    it 'returns the sorted task files' do
-      expect(call.map(&:timestamp)).to eq %w[3 1234 12345]
+    it 'filters with the #pending? method' do
+      call
+      tasks.each do |task|
+        expect(task).to have_received(:pending?).with(no_args).once
+      end
     end
   end
 end
