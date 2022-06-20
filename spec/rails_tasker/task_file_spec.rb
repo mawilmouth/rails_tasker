@@ -69,9 +69,9 @@ RSpec.describe RailsTasker::TaskFile do
     context 'task is not pending' do
       before { allow(instance).to receive(:pending?).and_return false }
 
-    it 'returns the expected status' do
-      expect(call).to eq described_class::UP_STATUS
-    end
+      it 'returns the expected status' do
+        expect(call).to eq described_class::UP_STATUS
+      end
     end
   end
 
