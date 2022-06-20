@@ -12,6 +12,7 @@ module RailsTasker
 
     generators do
       require 'rails_tasker/generators/install/install_generator'
+      require 'rails_tasker/generators/task/task_generator'
     end
   end
 end
