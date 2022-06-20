@@ -5,6 +5,7 @@ require 'rails_tasker'
 require_relative 'support/active_record/base'
 require_relative 'support/rails'
 require_relative 'support/rails/generators/base'
+require_relative 'support/shared_contexts/rake_task'
 
 SimpleCov.start
 
@@ -18,4 +19,6 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  config.shared_context_metadata_behavior = :apply_to_host_groups
 end
