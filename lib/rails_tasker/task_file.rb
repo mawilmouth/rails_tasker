@@ -31,6 +31,8 @@ module RailsTasker
 
       unless task_klass.nil?
         output = task_klass.call
+        complete_task!
+
         unload_object
       end
 
@@ -38,6 +40,10 @@ module RailsTasker
     end
 
     private
+
+    def complete_task!
+      Task.complete!(version: timestamp)
+    end
 
     def load_object
       require(filename)
