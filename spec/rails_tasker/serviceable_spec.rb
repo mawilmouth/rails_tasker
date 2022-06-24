@@ -30,14 +30,42 @@ RSpec.describe RailsTasker::Serviceable do
 
   describe 'ClassMethods' do
     describe '.call' do
+      let(:klass) do
+        Class.new do
+          include RailsTasker::Serviceable
+
+          def call; end
+        end
+      end
+
       before do
         allow(klass).to receive(:new).and_return instance
-        allow(instance).to receive(:call)
+        allow(instance).to receive(:call).and_call_original
       end
   
       it 'creates new instance' do
         klass.call
-        expect(klass).to have_received(:new).once
+        expect(klass).to have_received(:new).with(no_args).once
+      end
+
+      it 'calls the #call method on the instance' do
+        klass.call
+        expect(instance).to have_received(:call).with(no_args).once
+      end
+
+      context 'with args' do
+        let(:klass) do
+          Class.new do
+            include RailsTasker::Serviceable
+  
+            def call(test:, fake: nil); end
+          end
+        end
+
+        it 'passes args to the #call method on the instance' do
+          klass.call(test: true)
+          expect(instance).to have_received(:call).with(test: true).once
+        end
       end
     end
   end
