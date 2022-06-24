@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rails_tasker (0.1.0)
+    rails_tasker (1.0.0)
       colorize
       table_print
 
