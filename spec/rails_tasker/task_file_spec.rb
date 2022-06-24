@@ -80,6 +80,7 @@ RSpec.describe RailsTasker::TaskFile do
       allow(instance).to receive(:require).and_return true
       allow(ExampleTask).to receive(:call)
       allow(Object).to receive(:remove_const)
+      allow(RailsTasker::Task).to receive(:complete!)
     end
 
     it 'requires the expected file' do
@@ -95,6 +96,13 @@ RSpec.describe RailsTasker::TaskFile do
     it 'attempts to remove const to prevent name collisions' do
       instance.call
       expect(Object).to have_received(:remove_const).with(ExampleTask.to_s).once
+    end
+
+    it 'completes the task' do
+      instance.call
+      expect(RailsTasker::Task).to have_received(:complete!).with(
+        version: '1234'
+      ).once
     end
 
     context 'class cannot be found' do

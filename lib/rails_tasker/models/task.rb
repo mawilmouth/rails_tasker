@@ -7,7 +7,11 @@ module RailsTasker
     FILE_LOCATION = File.join(Rails.root, 'lib/rails_tasker/tasks/*.rb')
 
     def self.completed_task?(version:)
-      !all.find_by(version: version).nil?
+      !find_by(version: version).nil?
+    end
+
+    def self.complete!(version:)
+      find_or_create_by!(version: version)
     end
   end
 end
