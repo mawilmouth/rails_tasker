@@ -1,8 +1,8 @@
 # RailsTasker
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/rails_tasker`. To experiment with that code, run `bin/console` for an interactive prompt.
+`rails_tasker` provides a system to automate your post-deploy tasks as Plain Old Ruby Objects that are easy to test and create.
 
-TODO: Delete this and the text above, and describe your gem
+A new database table (`rails_tasker_tasks`) is created in order to keep track of the state of each task in a similar way to how rails maintains the states of migrations. 
 
 ## Installation
 
@@ -20,19 +20,41 @@ Or install it yourself as:
 
     $ gem install rails_tasker
 
+Run the install generator to create the needed configurations and migration:
+
+    $ rails generate rails_tasker:install
+
+Run the migration:
+
+    $ rails db:migrate
+
 ## Usage
 
-TODO: Write usage instructions here
+###### Create a new task
 
-## Development
+    $ rails generate rails_tasker:task new_task_name
+- This will create the following task file: `lib/rails_tasker/tasks/<current_timestamp>_new_task_name.rb`
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+###### Add the logic to the task
+- Each task must implement a `#call` instance method.
+    - This is the main method that will be called in order execute your new task.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+###### Run all pending tasks
+
+    $ rake rails_tasker:run
+
+###### Or run a specific task
+
+    $ rake rails_tasker:run[version]
+
+###### Note 
+It is recommended to run this after the migrations in the deployment process.
+
+That's it. A very simple system for post-deploy tasks.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/rails_tasker.
+Bug reports and pull requests are welcome on GitHub at https://github.com/mawilmouth/rails_tasker.
 
 ## License
 
