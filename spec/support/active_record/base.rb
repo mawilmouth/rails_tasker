@@ -14,7 +14,31 @@ module ActiveRecord
       def all_result
         []
       end
+
+      def find_by(**args)
+        all.find_by(**args)
+      end
+
+      def create!(**args)
+        all.create!(**args)
+      end
+
+      def find_or_create_by!(**args)
+        find_by(**args) || create!(**args)
+      end
     end
+
+    def initialize(**attributes)
+      @record = OpenStruct.new(**attributes)
+    end
+
+    def to_h
+      record.to_h
+    end
+
+    private
+
+    attr_reader :record
   end
 
   class Collection
@@ -33,13 +57,11 @@ module ActiveRecord
     end
 
     def find_by(**args)
-      args.each do |key, value|
-        if data.find { |v| v == value }
-          return OpenStruct.new(key => value)
-        end
-      end
+      data.find { |record| record.to_h == args }
+    end
 
-      nil
+    def create!(**args)
+      data << Base.new(**args)
     end
   end
 end
