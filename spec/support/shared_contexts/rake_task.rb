@@ -2,7 +2,8 @@
 
 RSpec.shared_context 'rake task', :shared_context => :metadata do
   let(:task_name) { self.class.top_level_description }
-  let(:invoke) { Rake::Task[task_name].invoke }
+  let(:args) { [] }
+  let(:invoke) { Rake::Task[task_name].invoke(*args) }
 
   before { Rake::Task.define_task(:environment) }
 
