@@ -1,4 +1,9 @@
 RailsTasker.setup do |config|
   # Require needed model files
   require 'rails_tasker/models/task.rb'
+
+  if Rails.env.test?
+    require 'rails_tasker/base'
+    Dir[RailsTasker::Task::FILE_LOCATION].each { |file| require file }
+  end
 end
